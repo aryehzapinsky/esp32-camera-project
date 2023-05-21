@@ -10,8 +10,12 @@ extern "C" {
 
 class OV7670Chip {
  public:
-  OV7670Chip(OV7670ChipPinConfiguration* pin_configuration) : pin_configuration_(*pin_configuration) {}
+  explicit OV7670Chip(OV7670ChipPinConfiguration* pin_configuration) : pin_configuration_(*pin_configuration) {}
   void Init();
+
+  /* @brief */
+  void InitializeI2C();
+
   /* @brief Resets the chip's registers. 
    *
    * Sets the reset pin to reset mode, waits 1 millisecond, 
@@ -25,6 +29,10 @@ class OV7670Chip {
  private:
   /* @brief Non-owning reference to pin configuration. */
   const OV7670ChipPinConfiguration& pin_configuration_;
+
+  constexpr int kClockFrequency() {
+    return 24'000'000;
+  }
 };
 
 

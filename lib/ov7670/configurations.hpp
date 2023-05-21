@@ -1,5 +1,5 @@
 #ifndef CONFIGURATIONS_HPP
-#define CONFIGUTATIONS_HPP
+#define CONFIGURATIONS_HPP
 
 // From http://web.mit.edu/6.111/www/f2016/tools/OV7670_2006.pdf
 // https://www.openhacks.com/uploadsproductos/ov7670_cmos_camera_module_revc_ds.pdf
@@ -94,7 +94,7 @@ ResolutionRegisterSettings vga_raw_bayer_rgb_mode = {
  * Table 8-2 on pages 45-62 in https://www.haoyuelectronics.com/Attachment/OV7670%20+%20AL422B(FIFO)%20Camera%20Module(V2.0)/OV7670%20Implementation%20Guide%20(V1.0).pdf
  *
  */
-enum class RegisterAddress{
+enum class RegisterAddress : unsigned char {
     GAIN,
     BLUE,
     RED,
@@ -441,14 +441,14 @@ enum class TestPatternType : unsigned char {
     fadeToGrayColorBar = 0b0000'0011,
 };
 
-enum class TestPatternScalingXscBitMask : unsigned char {
+enum class TestPatternScalingXscBitMask : const unsigned char {
     noTestOutput = 0b0000'0000,
     shiftingOne = 0b0000'0000,
     eightBarColorBar = 0b1000'0000,
     fadeToGrayColorBar = 0b1000'0000,
 };
 
-enum class TestPatternScalingYscBitMask : unsigned char {
+enum class TestPatternScalingYscBitMask : const unsigned char {
     noTestOutput = 0b0000'0000,
     shiftingOne = 0b1000'0000,
     eightBarColorBar = 0b0000'0000,
