@@ -33,6 +33,9 @@ class OV7670Chip {
   constexpr int kClockFrequency() {
     return 24'000'000;
   }
+
+/* @brief Configure the interrupt to trigger on positive edge of clock. */
+  void ConfigureXClock();
 };
 
 

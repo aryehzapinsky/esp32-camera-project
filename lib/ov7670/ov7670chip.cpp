@@ -37,14 +37,25 @@ void OV7670Chip::Init()
   /*
   GPIO configuration example: https://github.com/espressif/esp-idf/blob/17451f1fb3d6485af5113d96b6836a7ce60efee8/examples/peripherals/gpio/generic_gpio/main/gpio_example_main.c
   */
-  gpio_config_t io_conf = {};
-  io_conf.intr_type = GPIO_INTR_DISABLE;
-  io_conf.mode = GPIO_MODE_OUTPUT;
-  uint64_t pin_selection = 1ULL << pin_configuration_.RESET;
-  io_conf.pin_bit_mask = pin_selection;
-  io_conf.pull_down_en = GPIO_PULLDOWN_DISABLE;
-  io_conf.pull_up_en = GPIO_PULLUP_ENABLE;
-  gpio_config(&io_conf);
+  gpio_config_t reset_configuration = {
+    .pin_bit_mask = 1ULL << pin_configuration_.RESET,
+    .mode = GPIO_MODE_OUTPUT,
+    .pull_up_en = GPIO_PULLUP_ENABLE,
+    .pull_down_en = GPIO_PULLDOWN_DISABLE,
+    .intr_type = GPIO_INTR_DISABLE,
+  };
+  gpio_config(&reset_configuration);
+}
+
+void OV7670Chip::ConfigureXClock() {
+  gpio_config_t xclk_configuration = {
+    .pin_bit_mask = 1ULL << pin_configuration_.XCLK,
+    .mode = GPIO_MODE_INPUT,
+    .pull_up_en = GPIO_PULLUP_ENABLE,
+    .pull_down_en = GPIO_PULLDOWN_DISABLE,
+    .intr_type = GPIO_INTR_POSEDGE
+  };
+  gpio_config(&xclk_configuration);
 }
 
 void OV7670Chip::InitializeI2C()
@@ -59,6 +70,10 @@ void OV7670Chip::InitializeI2C()
   i2c_param_config(kI2cPrimaryPort, &configuration);
 
   i2c_driver_install(kI2cPrimaryPort, configuration.mode, /*slv_rx_buf_len=*/0, /*slv_tx_buf_len=*/0, /*intr_alloc_flags=*/0);
+}
+
+void DeinitializeI2C() {
+  i2c_driver_delete(kI2cPrimaryPort);
 }
 
 // https://stackoverflow.com/questions/14589417/can-an-enum-class-be-converted-to-the-underlying-type
