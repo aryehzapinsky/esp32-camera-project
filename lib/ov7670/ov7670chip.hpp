@@ -27,15 +27,24 @@ class OV7670Chip {
   void GenerateTestData();
 
  private:
+  void ConfigureInputClock();
+
+  void ConfigureHorizontalReference();
+
+  /* @brief Configure the interrupt to trigger on positive edge of clock. */
+  void ConfigurePixelClock();
+
+  void ConfigureVerticalSync();
+
+  void ConfigureResetSignal();
+  /* @brief Configure the power down signal.
+   *
+   * 0 or low is normal mode. So configure the pull down resistor.
+   */
+  void ConfigurePowerDownSignal();
+
   /* @brief Non-owning reference to pin configuration. */
   const OV7670ChipPinConfiguration& pin_configuration_;
-
-  constexpr int kClockFrequency() {
-    return 24'000'000;
-  }
-
-/* @brief Configure the interrupt to trigger on positive edge of clock. */
-  void ConfigureXClock();
 };
 
 

@@ -310,16 +310,19 @@ enum class SyncSignalPins {
 };
 
 enum class Com10BitMask : unsigned char {
-    HSYNC_Polarity = 0b0000'0001,
-    VSYNC_Polarity = 0b0000'0010,
-    HREF_Polarity = 0b0000'0100,
-    PCLK_Polarity = 0b0000'1000,
-    PCLK_Gated_By_HREF = 0b0001'0000,
+    HSYNC_Negative = 0b0000'0001,
+    VSYNC_Negative = 0b0000'0010,
+    VSYNC_changes_on_rising_edge_of_pclk = 0b0000'0100,
+    HREF_Polarity_reverse = 0b0000'1000,
+    PCLK_Polarity_reverse = 0b0001'0000,
+    PCLK_Gated_By_HREF = 0b0010'0000,
+    HREF_changes_to_HSYNC = 0b0100'0000,
+    Reserved = 0b1000'0000,
 };
 
 bool dataUpdatedAtRisingEdge (unsigned char register_value) {
     return ((register_value & 
-            static_cast<unsigned char>(Com10BitMask::PCLK_Polarity)) 
+            static_cast<unsigned char>(Com10BitMask::PCLK_Polarity_reverse)) 
             == 0b0000'1000);
 }
 
@@ -432,6 +435,11 @@ OV7670ChipPinConfiguration defaultPinConfiguration = {
 enum class ResetPinValues : uint8_t {
     ResetMode = 0x00,
     NormalMode = 0x01
+};
+
+enum class PowerDownSignalValues : uint8_t {
+    NormalMode = 0x00,
+    PowerDownMode = 0x01
 };
 
 enum class TestPatternType : unsigned char {
