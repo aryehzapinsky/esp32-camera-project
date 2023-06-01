@@ -8,6 +8,13 @@
 extern "C" {
 #endif
 
+typedef enum {
+  PixelClockUpdate,
+  HorizontalReferenceUpdate,
+  VerticalSyncUpdate,
+  Unknown,
+} ov7670_event_id_t;
+
 class OV7670Chip {
  public:
   explicit OV7670Chip(OV7670ChipPinConfiguration* pin_configuration) : pin_configuration_(*pin_configuration) {}
